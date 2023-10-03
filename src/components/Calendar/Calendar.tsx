@@ -1,47 +1,77 @@
 import DayLoader from "../DayLoader/DayLoader";
 import DateLoader from "../DateLoader.tsx/DateLoader";
-import { useState } from "react";
+import { useReducer } from "react";
 import { months } from "../../data/dates";
 
+enum DispatchAction {
+	NEXT,
+	PREVIOUS,
+}
+interface IState {
+	month: number;
+	year: number;
+}
+
+interface IAction {
+	type: DispatchAction;
+}
+
+const reducer = (state: IState, action: IAction) => {
+	switch (action.type) {
+		case DispatchAction.NEXT:
+			if (state.month < 11) {
+				return {
+					...state,
+					month: state.month + 1,
+				};
+			} else {
+				return {
+					...state,
+					month: 0,
+					year: state.year + 1,
+				};
+			}
+		case DispatchAction.PREVIOUS:
+			if (state.month > 0) {
+				return {
+					...state,
+					month: state.month - 1,
+				};
+			} else {
+				return {
+					...state,
+					month: 11,
+					year: state.year - 1,
+				};
+			}
+	}
+};
+
 const Calendar = () => {
-	const [nextPrev, setNextPrev] = useState(0);
 	const currDate: Date = new Date();
-	const currMonth = currDate.getMonth();
-	let currYear = currDate.getFullYear();
-	const changeMonth = () => {
-		if (currMonth + nextPrev < 0) {
-			currYear--;
-			return 11 + currMonth + nextPrev;
-		} else if (currMonth + nextPrev > 12) {
-			currYear++;
-			return currMonth - (currMonth - nextPrev);
-		} else {
-			return currMonth + nextPrev;
-		}
+	const [state, dispatch] = useReducer(reducer, {
+		month: currDate.getMonth(),
+		year: currDate.getFullYear(),
+	});
+	const handleChangeMonth = (dispatchType: DispatchAction) => {
+		dispatch({ type: dispatchType });
 	};
-	const month = changeMonth();
-	console.log(currYear);
-	const firstDayOfMonth = new Date(currYear, month, 1);
-	const lastDayOfMonth = new Date(currYear, month + 1, 0);
 
 	return (
 		<>
 			<div>
-				<button
-					onClick={() => setNextPrev(nextPrev - 1 > -9 ? nextPrev - 1 : -1)}
-				>
+				<button onClick={() => handleChangeMonth(DispatchAction.PREVIOUS)}>
 					{"<"}
 				</button>
-				<div>{months[month]}</div>
-				<button onClick={() => setNextPrev(nextPrev + 1)}>{">"}</button>
+				<div>
+					{months[state?.month]} {state?.year}
+				</div>
+				<button onClick={() => handleChangeMonth(DispatchAction.NEXT)}>
+					{">"}
+				</button>
 			</div>
 			<DayLoader />
-			<DateLoader
-				currMonth={month}
-				currYear={currYear}
-				firstDayOfMonth={firstDayOfMonth}
-				lastDayOfMonth={lastDayOfMonth}
-			/>
+			<DateLoader currMonth={state?.month} currYear={state?.year} />
 		</>
 	);
 };

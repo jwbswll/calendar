@@ -2,21 +2,15 @@ import Cell from "../Cell/Cell";
 import style from "./DateLoader.module.scss";
 
 interface IDateProps {
-	firstDayOfMonth: Date;
-	lastDayOfMonth: Date;
 	currYear: number;
 	currMonth: number;
 }
 
-const DateLoader = ({
-	firstDayOfMonth,
-	lastDayOfMonth,
-	currYear,
-	currMonth,
-}: IDateProps) => {
+const DateLoader = ({ currYear, currMonth }: IDateProps) => {
+	const firstDayOfMonth = new Date(currYear, currMonth, 1);
+	const lastDayOfMonth = new Date(currYear, currMonth + 1, 0);
 	const dates = [];
-	const firstDay =
-		firstDayOfMonth.getDay() > 0 ? firstDayOfMonth.getDay() + 1 : 6;
+	const firstDay = firstDayOfMonth.getDay();
 	const lastDay = lastDayOfMonth.getDay();
 	const lastDayOfPrevMonth = new Date(currYear, currMonth, 0).getDate();
 
@@ -31,8 +25,8 @@ const DateLoader = ({
 		}
 	}
 	//adding first dates of next month to end of array
-	if (lastDay > 0) {
-		for (let i = 1; i <= 7 - lastDay; i++) {
+	if (lastDay < 6) {
+		for (let i = 1; i <= 6 - lastDay; i++) {
 			dates.push(i);
 		}
 	}

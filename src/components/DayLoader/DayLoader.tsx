@@ -6,7 +6,7 @@ const Days = () => {
 	return (
 		<div className={style.week}>
 			{days.map((day, i) => (
-				<Cell day={i < 6 ? days[i + 1] : day} key={i} />
+				<Cell day={day} key={i} />
 			))}
 		</div>
 	);
