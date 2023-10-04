@@ -1,6 +1,7 @@
-.flex {
-	width: 380px;
+.main {
 	display: flex;
-	flex-wrap: wrap;
 	gap: 0.3em;
+	width: 100%;
+	flex-wrap: wrap;
+	justify-content: center;
 }

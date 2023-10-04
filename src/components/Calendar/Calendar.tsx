@@ -1,7 +1,12 @@
-import DayLoader from "../DayLoader/DayLoader";
 import DateLoader from "../DateLoader.tsx/DateLoader";
 import { useReducer } from "react";
 import { months } from "../../data/dates";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+	faChevronCircleLeft,
+	faChevronCircleRight,
+} from "@fortawesome/free-solid-svg-icons";
+import style from "./Calendar.module.scss";
 
 enum DispatchAction {
 	NEXT,
@@ -58,21 +63,26 @@ const Calendar = () => {
 	};
 
 	return (
-		<>
-			<div>
-				<button onClick={() => handleChangeMonth(DispatchAction.PREVIOUS)}>
-					{"<"}
-				</button>
-				<div>
-					{months[state?.month]} {state?.year}
+		<main className={style.calendar}>
+			<div className={style.background}>
+				<div className={style.monthBar}>
+					<FontAwesomeIcon
+						className={style.button}
+						icon={faChevronCircleLeft}
+						onClick={() => handleChangeMonth(DispatchAction.PREVIOUS)}
+					/>
+					<p className={style.month}>
+						{months[state?.month]} {state?.year}
+					</p>
+					<FontAwesomeIcon
+						className={style.button}
+						icon={faChevronCircleRight}
+						onClick={() => handleChangeMonth(DispatchAction.NEXT)}
+					/>
 				</div>
-				<button onClick={() => handleChangeMonth(DispatchAction.NEXT)}>
-					{">"}
-				</button>
+				<DateLoader currMonth={state?.month} currYear={state?.year} />
 			</div>
-			<DayLoader />
-			<DateLoader currMonth={state?.month} currYear={state?.year} />
-		</>
+		</main>
 	);
 };
 

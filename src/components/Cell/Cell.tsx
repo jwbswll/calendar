@@ -6,13 +6,17 @@ const Cell = ({ day, inactive }: any) => {
 		<div
 			className={
 				isString
-					? style.cell__weekday
+					? `${style.cell} ${style.cell__weekday}`
 					: inactive
-					? style.cell__inactive
-					: style.cell
+					? `${style.cell} ${style.cell__inactive}`
+					: `${style.cell} ${style.cell__active}`
 			}
 		>
-			{isString ? day[0] : day}
+			{isString ? (
+				<p className={style.day}>{day[0]}</p>
+			) : (
+				<p className={style.date}>{day}</p>
+			)}
 		</div>
 	);
 };

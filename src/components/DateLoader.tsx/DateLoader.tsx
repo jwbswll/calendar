@@ -1,5 +1,6 @@
 import Cell from "../Cell/Cell";
 import style from "./DateLoader.module.scss";
+import DayLoader from "../DayLoader/DayLoader";
 
 interface IDateProps {
 	currYear: number;
@@ -32,7 +33,8 @@ const DateLoader = ({ currYear, currMonth }: IDateProps) => {
 	}
 
 	return (
-		<div className={style.flex}>
+		<main className={style.main}>
+			<DayLoader />
 			{dates.map((date, i) => {
 				if (i < firstDay) {
 					return <Cell day={date} key={i} inactive={true} />;
@@ -46,7 +48,7 @@ const DateLoader = ({ currYear, currMonth }: IDateProps) => {
 					return <Cell day={date} key={i} inactive={true} />;
 				}
 			})}
-		</div>
+		</main>
 	);
 };
 
