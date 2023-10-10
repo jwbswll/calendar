@@ -37,15 +37,15 @@ const DateLoader = ({ currYear, currMonth }: IDateProps) => {
 			<DayLoader />
 			{dates.map((date, i) => {
 				if (i < firstDay) {
-					return <Cell day={date} key={i} inactive={true} />;
+					return <Cell date={date} key={i} inactive={true} />;
 				} else if (
 					i >= firstDay &&
 					date <= lastDayOfMonth.getDate() &&
 					i < firstDay + lastDayOfMonth.getDate()
 				) {
-					return <Cell day={date} key={i} inactive={false} />;
+					return <Cell date={date} key={i} inactive={false} />;
 				} else if (date < 7) {
-					return <Cell day={date} key={i} inactive={true} />;
+					return <Cell date={date} key={i} inactive={true} />;
 				}
 			})}
 		</main>

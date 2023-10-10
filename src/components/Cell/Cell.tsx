@@ -1,9 +1,18 @@
 import style from "./Cell.module.scss";
+import { useModalContext } from "../../context/ModalContext";
 
-const Cell = ({ day, inactive }: any) => {
+interface ICellProps {
+	day?: string;
+	date?: number;
+	inactive?: boolean;
+}
+
+const Cell = ({ day, date, inactive }: ICellProps) => {
 	const isString = typeof day == typeof "hello";
+	const { setIsOpen } = useModalContext();
 	return (
 		<div
+			onClick={() => setIsOpen(true)}
 			className={
 				isString
 					? `${style.cell} ${style.cell__weekday}`
@@ -13,9 +22,9 @@ const Cell = ({ day, inactive }: any) => {
 			}
 		>
 			{isString ? (
-				<p className={style.day}>{day[0]}</p>
+				<p className={style.day}>{day}</p>
 			) : (
-				<p className={style.date}>{day}</p>
+				<p className={style.date}>{date}</p>
 			)}
 		</div>
 	);

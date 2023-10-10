@@ -5,7 +5,7 @@ const DayLoader = () => {
 	return (
 		<>
 			{days.map((day, i) => (
-				<Cell day={day} key={i} />
+				<Cell day={day[0]} key={i} />
 			))}
 		</>
 	);

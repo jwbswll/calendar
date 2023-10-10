@@ -7,6 +7,7 @@ import {
 	faChevronCircleRight,
 } from "@fortawesome/free-solid-svg-icons";
 import style from "./Calendar.module.scss";
+import { ModalProvider } from "../../context/ModalContext";
 
 enum DispatchAction {
 	NEXT,
@@ -80,7 +81,9 @@ const Calendar = () => {
 						onClick={() => handleChangeMonth(DispatchAction.NEXT)}
 					/>
 				</div>
-				<DateLoader currMonth={state?.month} currYear={state?.year} />
+				<ModalProvider>
+					<DateLoader currMonth={state?.month} currYear={state?.year} />
+				</ModalProvider>
 			</div>
 		</main>
 	);
