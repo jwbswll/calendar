@@ -1,18 +1,34 @@
+import { useContext } from "react";
 import style from "./Cell.module.scss";
-import { useModalContext } from "../../context/ModalContext";
+import { ModalContext } from "../../context/ModalContext";
 
 interface ICellProps {
 	day?: string;
-	date?: number;
+	dateObject?: {
+		currYear: number;
+		currMonth: number;
+		date: number;
+	};
 	inactive?: boolean;
 }
 
-const Cell = ({ day, date, inactive }: ICellProps) => {
+const Cell = ({ day, dateObject, inactive }: ICellProps) => {
 	const isString = typeof day == typeof "hello";
-	const { setIsOpen } = useModalContext();
+	const { state, date } = useContext(ModalContext);
+
+	const openModal = () => {
+		state.setIsOpen(true);
+		date.setModalDate({
+			...date.modalDate,
+			currYear: dateObject ? dateObject.currYear : 0,
+			currMonth: dateObject ? dateObject.currMonth : 0,
+			date: dateObject ? dateObject.date : 0,
+		});
+	};
+
 	return (
 		<div
-			onClick={() => setIsOpen(true)}
+			onClick={openModal}
 			className={
 				isString
 					? `${style.cell} ${style.cell__weekday}`
@@ -24,7 +40,7 @@ const Cell = ({ day, date, inactive }: ICellProps) => {
 			{isString ? (
 				<p className={style.day}>{day}</p>
 			) : (
-				<p className={style.date}>{date}</p>
+				<p className={style.date}>{dateObject?.date}</p>
 			)}
 		</div>
 	);
