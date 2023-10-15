@@ -1,6 +1,9 @@
 import Cell from "../Cell/Cell";
 import style from "./DateLoader.module.scss";
 import DayLoader from "../DayLoader/DayLoader";
+import EventModal from "../EventModal/EventModal";
+import { useContext } from "react";
+import { ModalContext } from "../../context/ModalContext";
 
 interface IDateProps {
 	currYear: number;
@@ -14,6 +17,7 @@ const DateLoader = ({ currYear, currMonth }: IDateProps) => {
 	const firstDay = firstDayOfMonth.getDay();
 	const lastDay = lastDayOfMonth.getDay();
 	const lastDayOfPrevMonth = new Date(currYear, currMonth, 0).getDate();
+	const { date, state } = useContext(ModalContext);
 
 	// adding dates to array
 	for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
@@ -33,27 +37,30 @@ const DateLoader = ({ currYear, currMonth }: IDateProps) => {
 	}
 
 	return (
-		<main className={style.main}>
-			<DayLoader />
-			{dates.map((date, i) => {
-				const dateObject = {
-					currYear,
-					currMonth,
-					date,
-				};
-				if (i < firstDay) {
-					return <Cell dateObject={dateObject} key={i} inactive={true} />;
-				} else if (
-					i >= firstDay &&
-					date <= lastDayOfMonth.getDate() &&
-					i < firstDay + lastDayOfMonth.getDate()
-				) {
-					return <Cell dateObject={dateObject} key={i} inactive={false} />;
-				} else if (date < 7) {
-					return <Cell dateObject={dateObject} key={i} inactive={true} />;
-				}
-			})}
-		</main>
+		<>
+			{state.isOpen && <EventModal dateDetails={date.modalDate} />}
+			<main className={style.main}>
+				<DayLoader />
+				{dates.map((date, i) => {
+					const dateObject = {
+						currYear,
+						currMonth,
+						date,
+					};
+					if (i < firstDay) {
+						return <Cell dateObject={dateObject} key={i} inactive={true} />;
+					} else if (
+						i >= firstDay &&
+						date <= lastDayOfMonth.getDate() &&
+						i < firstDay + lastDayOfMonth.getDate()
+					) {
+						return <Cell dateObject={dateObject} key={i} inactive={false} />;
+					} else if (date < 7) {
+						return <Cell dateObject={dateObject} key={i} inactive={true} />;
+					}
+				})}
+			</main>
+		</>
 	);
 };
 

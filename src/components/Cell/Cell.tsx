@@ -17,13 +17,15 @@ const Cell = ({ day, dateObject, inactive }: ICellProps) => {
 	const { state, date } = useContext(ModalContext);
 
 	const openModal = () => {
-		state.setIsOpen(true);
-		date.setModalDate({
-			...date.modalDate,
-			currYear: dateObject ? dateObject.currYear : 0,
-			currMonth: dateObject ? dateObject.currMonth : 0,
-			date: dateObject ? dateObject.date : 0,
-		});
+		if (inactive == false && dateObject != undefined) {
+			state.setIsOpen(true);
+			date.setModalDate({
+				...date.modalDate,
+				currYear: dateObject ? dateObject.currYear : 0,
+				currMonth: dateObject ? dateObject.currMonth : 0,
+				date: dateObject ? dateObject.date : 0,
+			});
+		}
 	};
 
 	return (
